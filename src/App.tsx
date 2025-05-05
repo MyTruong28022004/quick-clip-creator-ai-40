@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Create from "./pages/Create";
 import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -18,9 +20,16 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/create" element={<Create />} />
-          <Route path="/library" element={<Library />} />
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* Protected Routes */}
+          <Route element={<Auth />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/library" element={<Library />} />
+          </Route>
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

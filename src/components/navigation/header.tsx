@@ -1,6 +1,6 @@
 
 import * as React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -10,9 +10,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Home, Plus, Search, Settings, User } from "lucide-react"
+import { Home, LogIn, Plus, Search, Settings, User } from "lucide-react"
+import { toast } from "sonner"
 
 export function Header() {
+  const navigate = useNavigate();
+  // Mock auth state - in a real app this would come from your auth provider
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+
+  const handleLogout = () => {
+    // Mock logout functionality
+    setIsLoggedIn(false);
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-creative-700 bg-black/95 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
@@ -45,24 +57,38 @@ export function Header() {
               <Plus className="h-4 w-4 mr-1" /> NEW VIDEO
             </Link>
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-creative-700">
-                <User className="h-5 w-5 text-creative-500" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-black border border-creative-800">
-              <DropdownMenuLabel className="font-bold text-creative-500 uppercase">MY ACCOUNT</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="uppercase font-semibold text-white/90">Profile</DropdownMenuItem>
-              <DropdownMenuItem className="uppercase font-semibold text-white/90">Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="uppercase font-bold text-creative-500">Log out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {isLoggedIn ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-creative-700">
+                  <User className="h-5 w-5 text-creative-500" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-black border border-creative-800">
+                <DropdownMenuLabel className="font-bold text-creative-500 uppercase">MY ACCOUNT</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="uppercase font-semibold text-white/90">Profile</DropdownMenuItem>
+                <DropdownMenuItem className="uppercase font-semibold text-white/90">Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="uppercase font-bold text-creative-500">
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button 
+              asChild 
+              variant="ghost" 
+              size="sm" 
+              className="gap-1 bg-transparent hover:bg-creative-700 text-creative-500 font-extrabold uppercase tracking-wider font-sans"
+            >
+              <Link to="/login">
+                <LogIn className="h-4 w-4 mr-1" /> Login
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
   )
 }
-
