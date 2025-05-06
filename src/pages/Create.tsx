@@ -1,6 +1,6 @@
 
 import * as React from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { Header } from "@/components/navigation/header"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,22 +16,34 @@ import { StepIndicator } from "@/components/ui/step-indicator"
 import { ScriptEditor } from "@/components/content/script-editor"
 import { VoiceSelection } from "@/components/content/voice-selection"
 import { VideoPreview } from "@/components/content/video-preview"
-import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { ArrowLeft, Check, Font, Music, Plus, Sparkles, X } from "lucide-react"
 
 export default function Create() {
   const navigate = useNavigate()
+  const location = useLocation()
+  
+  // Get topic from URL if available
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const urlTopic = params.get('topic');
+    if (urlTopic) {
+      setTopic(urlTopic);
+      // Optionally auto-generate script if topic is provided from URL
+      setTimeout(() => {
+        handleGenerateScript();
+      }, 500);
+    }
+  }, [location.search]);
+  
   const [currentStep, setCurrentStep] = React.useState(1)
   const [topic, setTopic] = React.useState("")
   const [script, setScript] = React.useState("")
   const [selectedVoice, setSelectedVoice] = React.useState<number | null>(null)
+  const [selectedKeywords, setSelectedKeywords] = React.useState<string[]>([])
+  const [downloadProgress, setDownloadProgress] = React.useState(0)
   
   const totalSteps = 4
-  
-  const handleNext = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1)
-    }
-  }
   
   const handleBack = () => {
     if (currentStep > 1) {
@@ -54,6 +66,8 @@ export default function Create() {
   
   const handleSaveScript = (content: string) => {
     setScript(content)
+    // Auto-advance to next step
+    setCurrentStep(3)
   }
   
   const handleSelectVoice = (voiceId: number) => {
@@ -62,7 +76,24 @@ export default function Create() {
   
   const handleDownload = () => {
     console.log("Downloading video...")
-    navigate("/library")
+    // Simulate download progress
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      setDownloadProgress(progress);
+      if (progress >= 100) {
+        clearInterval(interval);
+        navigate("/library")
+      }
+    }, 300);
+  }
+  
+  const handleKeywordSelect = (keyword: string) => {
+    if (selectedKeywords.includes(keyword)) {
+      setSelectedKeywords(selectedKeywords.filter(k => k !== keyword))
+    } else {
+      setSelectedKeywords([...selectedKeywords, keyword])
+    }
   }
   
   return (
@@ -92,30 +123,26 @@ export default function Create() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {["AI", "Tech", "Fashion", "Health", "Finance", "Education"].map((tag) => (
-                      <button 
+                      <Badge 
                         key={tag}
-                        className="px-3 py-1 rounded-full text-sm bg-creative-50 text-creative-600 hover:bg-creative-100"
-                        onClick={() => setTopic(tag)}
+                        variant={selectedKeywords.includes(tag) ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => handleKeywordSelect(tag)}
                       >
                         {tag}
-                      </button>
+                      </Badge>
                     ))}
                   </div>
                   <Button 
                     className="w-full gap-2"
                     onClick={handleGenerateScript}
-                    disabled={!topic.trim()}
+                    disabled={!topic.trim() && selectedKeywords.length === 0}
                   >
                     <Sparkles className="h-4 w-4" />
                     Generate Script from Topic
                   </Button>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-end">
-                <Button onClick={handleNext} disabled={!topic.trim()}>
-                  Next <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardFooter>
             </Card>
           )}
           
@@ -136,9 +163,6 @@ export default function Create() {
               <CardFooter className="flex justify-between">
                 <Button variant="outline" onClick={handleBack}>
                   <ArrowLeft className="mr-2 h-4 w-4" /> Back
-                </Button>
-                <Button onClick={handleNext} disabled={!script.trim()}>
-                  Next <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardFooter>
             </Card>
@@ -196,15 +220,82 @@ export default function Create() {
               <CardContent>
                 <VideoPreview
                   onDownload={handleDownload}
-                  onEdit={() => setCurrentStep(2)}
+                  onEdit={handleBack}
                 />
+                
+                <div className="mt-8">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-medium">Customize</h3>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="p-4 border rounded-lg">
+                      <h4 className="font-medium mb-2 flex items-center gap-2">
+                        <Plus size={16} /> Add Icons
+                      </h4>
+                      <div className="flex gap-3">
+                        {['💡', '🚀', '🌟', '💯', '🔥'].map(icon => (
+                          <button key={icon} className="w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100">
+                            {icon}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 border rounded-lg">
+                      <h4 className="font-medium mb-2 flex items-center gap-2">
+                        <Font size={16} /> Font Style
+                      </h4>
+                      <div className="flex gap-3">
+                        <button className="px-4 py-2 border rounded hover:bg-gray-100 font-sans">Sans</button>
+                        <button className="px-4 py-2 border rounded hover:bg-gray-100 font-serif">Serif</button>
+                        <button className="px-4 py-2 border rounded hover:bg-gray-100 font-mono">Mono</button>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 border rounded-lg">
+                      <h4 className="font-medium mb-2 flex items-center gap-2">
+                        <Music size={16} /> Music Background
+                      </h4>
+                      <div className="flex flex-col gap-2">
+                        <button className="flex justify-between w-full px-4 py-2 border rounded hover:bg-gray-100">
+                          <span>Upbeat Pop</span>
+                          <span>▶️</span>
+                        </button>
+                        <button className="flex justify-between w-full px-4 py-2 border rounded hover:bg-gray-100">
+                          <span>Ambient</span>
+                          <span>▶️</span>
+                        </button>
+                        <button className="flex justify-between w-full px-4 py-2 border rounded hover:bg-gray-100">
+                          <span>Motivational</span>
+                          <span>▶️</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {downloadProgress > 0 && downloadProgress < 100 && (
+                  <div className="mt-6">
+                    <div className="text-sm mb-1 flex justify-between">
+                      <span>Saving your video...</span>
+                      <span>{downloadProgress}%</span>
+                    </div>
+                    <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-creative-500 transition-all duration-300 ease-out"
+                        style={{ width: `${downloadProgress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
               <CardFooter className="flex justify-between">
                 <Button variant="outline" onClick={handleBack}>
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Make Changes
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
-                <Button onClick={handleDownload}>
-                  Download & Save <ArrowRight className="ml-2 h-4 w-4" />
+                <Button onClick={handleDownload} disabled={downloadProgress > 0 && downloadProgress < 100}>
+                  {downloadProgress > 0 && downloadProgress < 100 ? `Saving ${downloadProgress}%` : "Save"}
                 </Button>
               </CardFooter>
             </Card>

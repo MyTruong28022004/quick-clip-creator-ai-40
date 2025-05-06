@@ -3,7 +3,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Download, Edit, Play } from "lucide-react"
+import { Download, Play, Trash2 } from "lucide-react"
 
 interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
@@ -11,7 +11,7 @@ interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   duration?: string
   date?: string
   onPlay?: () => void
-  onEdit?: () => void
+  onDelete?: () => void
   onDownload?: () => void
 }
 
@@ -21,7 +21,7 @@ export function VideoCard({
   duration,
   date,
   onPlay,
-  onEdit,
+  onDelete,
   onDownload,
   className, 
   ...props 
@@ -68,9 +68,9 @@ export function VideoCard({
             size="sm" 
             variant="outline" 
             className="h-7 text-xs px-2"
-            onClick={onEdit}
+            onClick={onDelete}
           >
-            <Edit size={12} className="mr-1" /> Edit
+            <Trash2 size={12} className="mr-1" /> Delete
           </Button>
           <Button 
             size="sm" 

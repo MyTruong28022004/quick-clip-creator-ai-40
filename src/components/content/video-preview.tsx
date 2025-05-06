@@ -63,16 +63,6 @@ export function VideoPreview({
           <p className="text-muted-foreground">
             Your AI-generated short video has been created and is ready to be shared or downloaded.
           </p>
-          <div className="flex gap-3 mt-2">
-            <Button variant="outline" className="gap-2" onClick={onEdit}>
-              <Edit size={16} />
-              Edit
-            </Button>
-            <Button className="gap-2" onClick={onDownload}>
-              <Download size={16} />
-              Download
-            </Button>
-          </div>
         </div>
       </div>
     </div>
