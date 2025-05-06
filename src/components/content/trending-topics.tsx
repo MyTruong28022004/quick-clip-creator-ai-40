@@ -1,5 +1,6 @@
 
 import * as React from "react"
+import { Link } from "react-router-dom"
 import { TrendCard } from "@/components/ui/trend-card"
 
 // Mock trending data
@@ -51,9 +52,9 @@ export function TrendingTopics({ onSelectTopic }: TrendingTopicsProps) {
     <div className="mt-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Trending Topics</h2>
-        <button className="text-sm text-creative-600 hover:underline">
+        <Link to="/all-trending-topics" className="text-sm text-creative-600 hover:underline">
           See All
-        </button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {trendingTopics.map((topic) => (

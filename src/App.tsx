@@ -10,6 +10,7 @@ import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Auth from "./pages/Auth";
+import AllTrendingTopics from "./pages/AllTrendingTopics";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
+          <Route path="/all-trending-topics" element={<AllTrendingTopics />} />
           
           {/* Protected Routes */}
           <Route element={<Auth />}>
