@@ -10,30 +10,39 @@ import Library from "./pages/Library";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import AllTrendingTopics from "./pages/AllTrendingTopics";
+import { ThemeProvider } from "./lib/theme";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          
-          {/* Protected Routes */}
-          <Route element={<Auth />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/library" element={<Library />} />
-          </Route>
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/all-trending-topics" element={<AllTrendingTopics />} />
+            
+            {/* Protected Routes */}
+            <Route element={<Auth />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/create" element={<Create />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+            
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

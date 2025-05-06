@@ -1,5 +1,6 @@
 
 import * as React from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { TrendCard } from "@/components/ui/trend-card"
 
 // Mock trending data
@@ -47,13 +48,24 @@ interface TrendingTopicsProps {
 }
 
 export function TrendingTopics({ onSelectTopic }: TrendingTopicsProps) {
+  const navigate = useNavigate();
+  
+  const handleTrendClick = (topic: string) => {
+    if (onSelectTopic) {
+      onSelectTopic(topic);
+    } else {
+      // Navigate to create page with topic
+      navigate(`/create?topic=${encodeURIComponent(topic)}`);
+    }
+  };
+  
   return (
     <div className="mt-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Trending Topics</h2>
-        <button className="text-sm text-creative-600 hover:underline">
+        <Link to="/all-trending-topics" className="text-sm text-creative-600 hover:underline">
           See All
-        </button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {trendingTopics.map((topic) => (
@@ -62,7 +74,7 @@ export function TrendingTopics({ onSelectTopic }: TrendingTopicsProps) {
             title={topic.title}
             description={topic.description}
             trendScore={topic.trendScore}
-            onClick={() => onSelectTopic?.(topic.title)}
+            onClick={() => handleTrendClick(topic.title)}
           />
         ))}
       </div>

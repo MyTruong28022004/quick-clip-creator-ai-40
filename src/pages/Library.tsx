@@ -1,10 +1,9 @@
 
 import * as React from "react"
-import { Link } from "react-router-dom"
 import { Header } from "@/components/navigation/header"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Plus, Search } from "lucide-react"
+import { Search } from "lucide-react"
 import { LibraryGrid } from "@/components/content/library-grid"
 
 export default function Library() {
@@ -43,12 +42,6 @@ export default function Library() {
                 <Search className="h-4 w-4" />
               </Button>
             </form>
-            <Button asChild className="gap-2">
-              <Link to="/create">
-                <Plus className="h-4 w-4" />
-                New Video
-              </Link>
-            </Button>
           </div>
         </div>
         
