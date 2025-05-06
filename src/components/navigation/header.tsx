@@ -51,21 +51,6 @@ export function Header() {
         </div>
         <div className="flex items-center gap-2">
           <Button 
-            variant="ghost" 
-            size="icon" 
-            className={`rounded-full ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-creative-700"}`}
-          >
-            <Search className="h-5 w-5 text-creative-500" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className={`rounded-full ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-creative-700"}`}
-            onClick={() => navigate('/settings')}
-          >
-            <Settings className="h-5 w-5 text-creative-500" />
-          </Button>
-          <Button 
             asChild 
             variant="default" 
             size="sm" 
