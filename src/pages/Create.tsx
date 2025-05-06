@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { Header } from "@/components/navigation/header"
@@ -17,7 +16,7 @@ import { ScriptEditor } from "@/components/content/script-editor"
 import { VoiceSelection } from "@/components/content/voice-selection"
 import { VideoPreview } from "@/components/content/video-preview"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Check, Font, Music, Plus, Sparkles, X } from "lucide-react"
+import { ArrowLeft, Check, Type, Music, Plus, Sparkles, X } from "lucide-react"
 
 export default function Create() {
   const navigate = useNavigate()
@@ -244,7 +243,7 @@ export default function Create() {
                     
                     <div className="p-4 border rounded-lg">
                       <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <Font size={16} /> Font Style
+                        <Type size={16} /> Font Style
                       </h4>
                       <div className="flex gap-3">
                         <button className="px-4 py-2 border rounded hover:bg-gray-100 font-sans">Sans</button>
