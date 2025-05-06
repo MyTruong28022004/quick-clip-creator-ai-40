@@ -1,0 +1,21 @@
+#Admin quản lý qua cấu hình?
+#API, database ==> mongo
+
+#Dashboard
+Điều hướng nếu trend tới create video, lấy nội dung trong trend đó
+
+#My video
+bỏ Edit đổi thành Delete, có confirm delete
+Bỏ nút new video
+
+#Create video
+Có thể chọn nhiều keyword
+Bỏ nút next
+Bỏ save script đổi thành next
+Chưa chọn được background
+
+#Preview
+Thêm chỗ Add icon, font-style, music background
+Make change chuyển thành Back
+Download and save chuyển thành Save
+Download hoặc save thể hiện process %

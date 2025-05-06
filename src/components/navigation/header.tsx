@@ -37,21 +37,12 @@ export function Header() {
             <Link to="/" className="flex items-center gap-2 text-sm font-extrabold tracking-widest uppercase font-sans hover:text-creative-500 transition-colors">
               <Home className="w-5 h-5 text-creative-500" /> HOME
             </Link>
-            <Link to="/create" className="flex items-center gap-2 text-sm font-extrabold tracking-widest uppercase font-sans hover:text-creative-500 transition-colors">
-              <Plus className="w-5 h-5 text-creative-500" /> CREATE
-            </Link>
             <Link to="/library" className="flex items-center gap-2 text-sm font-extrabold tracking-widest uppercase font-sans hover:text-creative-500 transition-colors">
               <User className="w-5 h-5 text-creative-500" /> MY VIDEOS
             </Link>
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="rounded-full hover:bg-creative-700">
-            <Search className="h-5 w-5 text-creative-500" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full hover:bg-creative-700">
-            <Settings className="h-5 w-5 text-creative-500" />
-          </Button>
           <Button asChild variant="default" size="sm" className="gap-1 hidden sm:flex bg-creative-500 hover:bg-creative-700 text-white font-extrabold uppercase tracking-wider font-sans">
             <Link to="/create">
               <Plus className="h-4 w-4 mr-1" /> NEW VIDEO
