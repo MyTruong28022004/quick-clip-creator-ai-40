@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
@@ -45,9 +46,9 @@ const chartData = [
 ];
 
 const tableData = [
-    { id: "VID001", title: "Video tuyệt vời đầu tiên của tôi", views: 12043, likes: 256, comments: 48, shares: 12 },
-    { id: "VID002", title: "Chuyến đi lên núi", views: 8901, likes: 180, comments: 22, shares: 8 },
-    { id: "VID003", title: "Đập hộp đồ công nghệ mới", views: 25402, likes: 512, comments: 128, shares: 64 },
+    { id: "VID001", title: "Video tuyệt vời đầu tiên của tôi", thumbnail: "https://images.pexels.com/videos/3209828/free-video-3209828.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500", views: 12043, likes: 256, comments: 48, shares: 12 },
+    { id: "VID002", title: "Chuyến đi lên núi", thumbnail: "https://images.pexels.com/videos/857134/free-video-857134.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500", views: 8901, likes: 180, comments: 22, shares: 8 },
+    { id: "VID003", title: "Đập hộp đồ công nghệ mới", thumbnail: "https://images.pexels.com/videos/3194248/free-video-3194248.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500", views: 25402, likes: 512, comments: 128, shares: 64 },
 ]
 
 export function AnalyticsDashboard() {
@@ -169,6 +170,7 @@ const AnalyticsTabContent = ({ platform }: { platform: string }) => {
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead className="w-[120px]">Thumbnail</TableHead>
                             <TableHead>Tiêu đề Video</TableHead>
                             <TableHead className="text-right">Lượt xem</TableHead>
                             <TableHead className="text-right">Thích</TableHead>
@@ -179,6 +181,13 @@ const AnalyticsTabContent = ({ platform }: { platform: string }) => {
                     <TableBody>
                         {tableData.map(video => (
                             <TableRow key={video.id}>
+                                <TableCell>
+                                    <img 
+                                        src={video.thumbnail} 
+                                        alt={video.title} 
+                                        className="w-24 aspect-video rounded-md object-cover"
+                                    />
+                                </TableCell>
                                 <TableCell className="font-medium">{video.title}</TableCell>
                                 <TableCell className="text-right">{video.views.toLocaleString()}</TableCell>
                                 <TableCell className="text-right">{video.likes.toLocaleString()}</TableCell>

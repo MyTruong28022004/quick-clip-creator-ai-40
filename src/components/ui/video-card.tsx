@@ -19,7 +19,6 @@ interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   date?: string
   onPlay?: () => void
   onDelete?: () => void
-  onDownload?: () => void
   onShare?: () => void
   onAnalytics?: () => void
 }
@@ -55,6 +54,26 @@ export function VideoCard({
             <span className="text-creative-300">No Preview</span>
           </div>
         )}
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-8 w-8 z-10 rounded-full bg-black/30 hover:bg-black/50">
+              <MoreHorizontal size={16} className="text-white" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={onShare}>
+              <Share2 className="mr-2 h-4 w-4" />
+              <span>Share</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={onDelete} className="text-destructive focus:text-destructive focus:bg-destructive/10">
+              <Trash2 className="mr-2 h-4 w-4" />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         {duration && (
           <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded">
             {duration}
@@ -70,31 +89,8 @@ export function VideoCard({
         </Button>
       </div>
       <CardContent className="p-3">
-        <div className="flex justify-between items-start">
-          <div className="flex-1 mr-2">
-            <h3 className="font-medium text-sm truncate mb-1 text-black dark:text-white">{title}</h3>
-            {date && <p className="text-xs text-muted-foreground">{date}</p>}
-          </div>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-7 w-7 flex-shrink-0">
-                <MoreHorizontal size={16} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onShare}>
-                <Share2 className="mr-2 h-4 w-4" />
-                <span>Share</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onDelete} className="text-destructive focus:text-destructive focus:bg-destructive/10">
-                <Trash2 className="mr-2 h-4 w-4" />
-                <span>Delete</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <h3 className="font-medium text-sm truncate mb-1 text-black dark:text-white">{title}</h3>
+        {date && <p className="text-xs text-muted-foreground">{date}</p>}
       </CardContent>
     </Card>
   )
