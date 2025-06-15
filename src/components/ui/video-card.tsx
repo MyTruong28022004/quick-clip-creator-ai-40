@@ -23,9 +23,9 @@ interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   duration?: string
   date?: string
   sharedOn?: {
-    facebook?: boolean;
-    youtube?: boolean;
-    tiktok?: boolean;
+    facebook?: string | null;
+    youtube?: string | null;
+    tiktok?: string | null;
   };
   onPlay?: () => void
   onDelete?: () => void
@@ -116,30 +116,36 @@ export function VideoCard({
               {sharedOn.facebook && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Facebook className="h-4 w-4 text-blue-600" />
+                    <a href={sharedOn.facebook} target="_blank" rel="noopener noreferrer" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm">
+                      <Facebook className="h-4 w-4 text-blue-600" />
+                    </a>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Facebook</p>
+                    <p>Xem trên Facebook</p>
                   </TooltipContent>
                 </Tooltip>
               )}
               {sharedOn.youtube && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Youtube className="h-4 w-4 text-red-600" />
+                    <a href={sharedOn.youtube} target="_blank" rel="noopener noreferrer" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm">
+                      <Youtube className="h-4 w-4 text-red-600" />
+                    </a>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>YouTube</p>
+                    <p>Xem trên YouTube</p>
                   </TooltipContent>
                 </Tooltip>
               )}
               {sharedOn.tiktok && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Music className="h-4 w-4 text-black dark:text-white" />
+                    <a href={sharedOn.tiktok} target="_blank" rel="noopener noreferrer" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm">
+                      <Music className="h-4 w-4 text-black dark:text-white" />
+                    </a>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>TikTok</p>
+                    <p>Xem trên TikTok</p>
                   </TooltipContent>
                 </Tooltip>
               )}

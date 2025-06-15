@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { Header } from "@/components/navigation/header";
 import { PlatformConnectCard } from "@/components/share/platform-connect-card";
@@ -18,10 +19,10 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const initialMockVideos = [
-  { id: 'vid1', title: 'Video tuyệt vời đầu tiên của tôi', thumbnail: 'https://images.pexels.com/videos/3209828/free-video-3209828.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '10 thg 6, 2025', duration: '0:45', sharedOn: { facebook: true, youtube: false, tiktok: false } },
-  { id: 'vid2', title: 'Chuyến đi lên núi', thumbnail: 'https://images.pexels.com/videos/857134/free-video-857134.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '12 thg 6, 2025', duration: '1:12', sharedOn: { facebook: true, youtube: true, tiktok: false } },
-  { id: 'vid3', title: 'Đập hộp đồ công nghệ mới', thumbnail: 'https://images.pexels.com/videos/3194248/free-video-3194248.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '14 thg 6, 2025', duration: '2:30', sharedOn: { facebook: false, youtube: true, tiktok: false } },
-  { id: 'vid4', title: 'Hướng dẫn nấu ăn nhanh', thumbnail: 'https://images.pexels.com/videos/3042790/free-video-3042790.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '15 thg 6, 2025', duration: '0:59', sharedOn: { facebook: false, youtube: false, tiktok: false } },
+  { id: 'vid1', title: 'Video tuyệt vời đầu tiên của tôi', thumbnail: 'https://images.pexels.com/videos/3209828/free-video-3209828.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '10 thg 6, 2025', duration: '0:45', sharedOn: { facebook: 'https://facebook.com/video/vid1', youtube: null, tiktok: null } },
+  { id: 'vid2', title: 'Chuyến đi lên núi', thumbnail: 'https://images.pexels.com/videos/857134/free-video-857134.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '12 thg 6, 2025', duration: '1:12', sharedOn: { facebook: 'https://facebook.com/video/vid2', youtube: 'https://youtube.com/watch?v=vid2', tiktok: null } },
+  { id: 'vid3', title: 'Đập hộp đồ công nghệ mới', thumbnail: 'https://images.pexels.com/videos/3194248/free-video-3194248.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '14 thg 6, 2025', duration: '2:30', sharedOn: { facebook: null, youtube: 'https://youtube.com/watch?v=vid3', tiktok: null } },
+  { id: 'vid4', title: 'Hướng dẫn nấu ăn nhanh', thumbnail: 'https://images.pexels.com/videos/3042790/free-video-3042790.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '15 thg 6, 2025', duration: '0:59', sharedOn: { facebook: null, youtube: null, tiktok: null } },
 ];
 
 export default function Share() {
@@ -96,8 +97,9 @@ export default function Share() {
         if (video.id === videoId) {
           const newSharedOn = { ...video.sharedOn };
           for (const platform in sharedPlatforms) {
-            if (sharedPlatforms[platform]) {
-              newSharedOn[platform as keyof typeof newSharedOn] = true;
+            if (sharedPlatforms[platform] && !newSharedOn[platform as keyof typeof newSharedOn]) {
+              // In a real app, this URL would come from an API response. For now, we use a mock URL.
+              newSharedOn[platform as keyof typeof newSharedOn] = `https://www.${platform}.com/video/${videoId}`;
             }
           }
           return { ...video, sharedOn: newSharedOn };
