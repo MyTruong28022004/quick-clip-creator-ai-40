@@ -3,7 +3,14 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Download, Play, Trash2 } from "lucide-react"
+import { Download, Play, Trash2, MoreHorizontal, Share2, BarChart } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
@@ -13,6 +20,8 @@ interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   onPlay?: () => void
   onDelete?: () => void
   onDownload?: () => void
+  onShare?: () => void
+  onAnalytics?: () => void
 }
 
 export function VideoCard({ 
@@ -23,6 +32,8 @@ export function VideoCard({
   onPlay,
   onDelete,
   onDownload,
+  onShare,
+  onAnalytics,
   className, 
   ...props 
 }: VideoCardProps) {
@@ -61,25 +72,38 @@ export function VideoCard({
         </Button>
       </div>
       <CardContent className="p-3">
-        <h3 className="font-medium text-sm truncate mb-1">{title}</h3>
-        {date && <p className="text-xs text-muted-foreground mb-2">{date}</p>}
-        <div className="flex gap-2 justify-end">
-          <Button 
-            size="sm" 
-            variant="outline" 
-            className="h-7 text-xs px-2"
-            onClick={onDelete}
-          >
-            <Trash2 size={12} className="mr-1" /> Delete
-          </Button>
-          <Button 
-            size="sm" 
-            variant="outline" 
-            className="h-7 text-xs px-2"
-            onClick={onDownload}
-          >
-            <Download size={12} className="mr-1" /> Download
-          </Button>
+        <div className="flex justify-between items-start">
+          <div className="flex-1 mr-2">
+            <h3 className="font-medium text-sm truncate mb-1">{title}</h3>
+            {date && <p className="text-xs text-muted-foreground">{date}</p>}
+          </div>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-7 w-7 flex-shrink-0">
+                <MoreHorizontal size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={onShare}>
+                <Share2 className="mr-2 h-4 w-4" />
+                <span>Share</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onAnalytics}>
+                <BarChart className="mr-2 h-4 w-4" />
+                <span>Analytics</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={onDownload}>
+                <Download className="mr-2 h-4 w-4" />
+                <span>Download</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onDelete} className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </CardContent>
     </Card>
