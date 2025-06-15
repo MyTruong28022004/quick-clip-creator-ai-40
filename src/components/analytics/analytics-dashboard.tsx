@@ -1,6 +1,6 @@
 
 import * as React from "react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart } from "recharts"
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -16,6 +16,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 import {
   Table,
   TableBody,
@@ -37,12 +46,12 @@ import { addDays, format } from "date-fns"
 import { cn } from "@/lib/utils"
 
 const chartData = [
-    { month: "Tháng 1", views: 1860 },
-    { month: "Tháng 2", views: 3050 },
-    { month: "Tháng 3", views: 2370 },
-    { month: "Tháng 4", views: 730 },
-    { month: "Tháng 5", views: 2090 },
-    { month: "Tháng 6", views: 2140 },
+    { month: "Tháng 1", views: 1860, likes: 1234, comments: 150, shares: 80 },
+    { month: "Tháng 2", views: 3050, likes: 2543, comments: 340, shares: 120 },
+    { month: "Tháng 3", views: 2370, likes: 1890, comments: 210, shares: 95 },
+    { month: "Tháng 4", views: 730, likes: 620, comments: 80, shares: 30 },
+    { month: "Tháng 5", views: 2090, likes: 1750, comments: 180, shares: 75 },
+    { month: "Tháng 6", views: 2140, likes: 1980, comments: 250, shares: 110 },
 ];
 
 const tableData = [
@@ -120,15 +129,25 @@ export function AnalyticsDashboard() {
 }
 
 const AnalyticsTabContent = ({ platform }: { platform: string }) => {
+    const [metric, setMetric] = React.useState("views");
+    const [chartType, setChartType] = React.useState("bar");
+
     const platformColors: { [key: string]: string } = {
         YouTube: "hsl(var(--destructive))", // Red
-        Facebook: "hsl(var(--primary))", // Blue
+        Facebook: "#facc15", // Yellow
         TikTok: "#22c55e", // Green
     };
 
+    const metricLabels: { [key: string]: string } = {
+        views: "Lượt xem",
+        likes: "Lượt thích",
+        comments: "Bình luận",
+        shares: "Chia sẻ",
+    };
+
     const chartConfig = {
-        views: {
-            label: "Lượt xem",
+        [metric]: {
+            label: metricLabels[metric],
             color: platformColors[platform] || "hsl(var(--chart-1))",
         },
     } satisfies ChartConfig;
@@ -136,26 +155,66 @@ const AnalyticsTabContent = ({ platform }: { platform: string }) => {
     return (
     <div className="space-y-6">
         <Card>
-            <CardHeader>
-                <CardTitle>Lượt xem theo thời gian</CardTitle>
-                <CardDescription>
-                    Tổng lượt xem cho các video {platform} của bạn trong khoảng thời gian đã chọn.
-                </CardDescription>
+            <CardHeader className="flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex-1">
+                    <CardTitle>Thống kê theo thời gian</CardTitle>
+                    <CardDescription>
+                        Tổng {metricLabels[metric].toLowerCase()} cho các video {platform} của bạn trong khoảng thời gian đã chọn.
+                    </CardDescription>
+                </div>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <Select value={metric} onValueChange={setMetric}>
+                        <SelectTrigger className="w-full sm:w-[150px]">
+                            <SelectValue placeholder="Chọn chỉ số" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="views">Lượt xem</SelectItem>
+                            <SelectItem value="likes">Lượt thích</SelectItem>
+                            <SelectItem value="comments">Bình luận</SelectItem>
+                            <SelectItem value="shares">Chia sẻ</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <RadioGroup defaultValue="bar" value={chartType} onValueChange={setChartType} className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="bar" id={`r1-${platform}`} />
+                            <Label htmlFor={`r1-${platform}`}>Cột</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="line" id={`r2-${platform}`} />
+                            <Label htmlFor={`r2-${platform}`}>Đường</Label>
+                        </div>
+                    </RadioGroup>
+                </div>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                    <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="month"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                        />
-                        <YAxis />
-                        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
-                        <Bar dataKey="views" fill="var(--color-views)" radius={8} />
-                    </BarChart>
+                    {chartType === "bar" ? (
+                        <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="month"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                            />
+                            <YAxis />
+                            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+                            <Bar dataKey={metric} fill={`var(--color-${metric})`} radius={8} />
+                        </BarChart>
+                    ) : (
+                        <LineChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
+                             <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="month"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                            />
+                            <YAxis />
+                            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+                            <Line type="monotone" dataKey={metric} stroke={`var(--color-${metric})`} strokeWidth={2} activeDot={{ r: 8 }} />
+                        </LineChart>
+                    )}
                 </ChartContainer>
             </CardContent>
         </Card>
