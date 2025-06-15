@@ -3,7 +3,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Play, Trash2, MoreHorizontal, Share2 } from "lucide-react"
+import { Play, Trash2, MoreHorizontal, Share2, Download } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +21,7 @@ interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   onDelete?: () => void
   onShare?: () => void
   onAnalytics?: () => void
+  onDownload?: () => void
 }
 
 export function VideoCard({ 
@@ -31,6 +32,8 @@ export function VideoCard({
   onPlay,
   onDelete,
   onShare,
+  onAnalytics,
+  onDownload,
   className, 
   ...props 
 }: VideoCardProps) {
@@ -65,6 +68,10 @@ export function VideoCard({
             <DropdownMenuItem onClick={onShare}>
               <Share2 className="mr-2 h-4 w-4" />
               <span>Share</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={onDownload}>
+              <Download className="mr-2 h-4 w-4" />
+              <span>Download</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onDelete} className="text-destructive focus:text-destructive focus:bg-destructive/10">
