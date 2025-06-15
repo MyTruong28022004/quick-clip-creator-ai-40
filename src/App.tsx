@@ -14,6 +14,8 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import AllTrendingTopics from "./pages/AllTrendingTopics";
 import { ThemeProvider } from "./lib/theme";
+import Share from "./pages/Share";
+import Analytics from "./pages/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +36,8 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/create" element={<Create />} />
               <Route path="/library" element={<Library />} />
+              <Route path="/share" element={<Share />} />
+              <Route path="/analytics" element={<Analytics />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
             </Route>
