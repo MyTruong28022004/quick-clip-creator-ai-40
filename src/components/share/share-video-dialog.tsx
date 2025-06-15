@@ -76,61 +76,66 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange, onCon
             Chỉnh sửa chi tiết và chọn nền tảng để chia sẻ video của bạn.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
-          <div className="space-y-4">
+        
+        {/* Platform Selectors */}
+        <div className="space-y-3 py-4">
+            <Label className="font-semibold">Chọn nền tảng</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {connections.facebook && (
+                <div>
+                  <Checkbox id="facebook" checked={platforms.facebook} onCheckedChange={(checked) => handlePlatformChange("facebook", !!checked)} className="peer sr-only" />
+                  <Label htmlFor="facebook" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground">
+                    <Facebook className="h-6 w-6" />
+                    <span className="text-sm font-medium">Facebook</span>
+                  </Label>
+                </div>
+              )}
+              {connections.youtube && (
+                <div>
+                  <Checkbox id="youtube" checked={platforms.youtube} onCheckedChange={(checked) => handlePlatformChange("youtube", !!checked)} className="peer sr-only" />
+                  <Label htmlFor="youtube" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground">
+                    <Youtube className="h-6 w-6" />
+                    <span className="text-sm font-medium">YouTube</span>
+                  </Label>
+                </div>
+              )}
+              {connections.tiktok && (
+                <div>
+                  <Checkbox id="tiktok" checked={platforms.tiktok} onCheckedChange={(checked) => handlePlatformChange("tiktok", !!checked)} className="peer sr-only" />
+                  <Label htmlFor="tiktok" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground">
+                    <Music className="h-6 w-6" />
+                    <span className="text-sm font-medium">TikTok</span>
+                  </Label>
+                </div>
+              )}
+            </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
             <ShareVideoPreview posterSrc={video.thumbnail} />
+          </div>
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title">Tiêu đề</Label>
               <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Mô tả</Label>
-              <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Thêm mô tả cho video của bạn..." />
-            </div>
-          </div>
-          <div className="space-y-6 flex flex-col justify-between">
-            <div>
-              <Label className="font-semibold">Chọn nền tảng</Label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-                {connections.facebook && (
-                  <div>
-                    <Checkbox id="facebook" checked={platforms.facebook} onCheckedChange={(checked) => handlePlatformChange("facebook", !!checked)} className="peer sr-only" />
-                    <Label htmlFor="facebook" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary">
-                      <Facebook className="h-6 w-6 text-blue-600" />
-                      <span className="text-sm font-medium">Facebook</span>
-                    </Label>
-                  </div>
-                )}
-                {connections.youtube && (
-                  <div>
-                    <Checkbox id="youtube" checked={platforms.youtube} onCheckedChange={(checked) => handlePlatformChange("youtube", !!checked)} className="peer sr-only" />
-                    <Label htmlFor="youtube" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary">
-                      <Youtube className="h-6 w-6 text-red-600" />
-                      <span className="text-sm font-medium">YouTube</span>
-                    </Label>
-                  </div>
-                )}
-                {connections.tiktok && (
-                  <div>
-                    <Checkbox id="tiktok" checked={platforms.tiktok} onCheckedChange={(checked) => handlePlatformChange("tiktok", !!checked)} className="peer sr-only" />
-                    <Label htmlFor="tiktok" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary">
-                      <Music className="h-6 w-6" />
-                      <span className="text-sm font-medium">TikTok</span>
-                    </Label>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="space-y-2 pt-4">
-              <Button variant="outline" className="w-full" onClick={handleAutoCaption}>Tạo phụ đề tự động</Button>
+              <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Thêm mô tả cho video của bạn..." className="min-h-[150px] md:min-h-[200px]" />
             </div>
           </div>
         </div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="ghost">Hủy</Button>
-          </DialogClose>
-          <Button onClick={handleQuickShare}>Chia sẻ ngay</Button>
+
+        <DialogFooter className="pt-4 sm:justify-between">
+          <Button variant="outline" onClick={handleAutoCaption} className="mt-2 w-full sm:mt-0 sm:w-auto">Tạo phụ đề tự động</Button>
+          <div className="flex w-full flex-col-reverse gap-2 sm:w-auto sm:flex-row sm:justify-end">
+            <DialogClose asChild>
+              <Button variant="ghost" className="w-full sm:w-auto">Hủy</Button>
+            </DialogClose>
+            <Button onClick={handleQuickShare} className="w-full sm:w-auto">Chia sẻ ngay</Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
