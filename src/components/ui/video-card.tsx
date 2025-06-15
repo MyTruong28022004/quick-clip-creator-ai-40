@@ -11,6 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
@@ -108,9 +113,36 @@ export function VideoCard({
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs text-muted-foreground">Đã chia sẻ:</span>
             <div className="flex items-center gap-1.5">
-              {sharedOn.facebook && <Facebook className="h-4 w-4 text-blue-600" title="Facebook" />}
-              {sharedOn.youtube && <Youtube className="h-4 w-4 text-red-600" title="YouTube" />}
-              {sharedOn.tiktok && <Music className="h-4 w-4 text-black dark:text-white" title="TikTok" />}
+              {sharedOn.facebook && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Facebook className="h-4 w-4 text-blue-600" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Facebook</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              {sharedOn.youtube && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Youtube className="h-4 w-4 text-red-600" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>YouTube</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              {sharedOn.tiktok && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Music className="h-4 w-4 text-black dark:text-white" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>TikTok</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
             </div>
           </div>
         )}
