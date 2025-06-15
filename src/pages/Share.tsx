@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { Header } from "@/components/navigation/header";
 import { PlatformConnectCard } from "@/components/share/platform-connect-card";
@@ -7,11 +8,11 @@ import { VideoCard } from "@/components/ui/video-card";
 import { ShareVideoDialog } from "@/components/share/share-video-dialog";
 import { toast } from "sonner";
 
-const mockVideos = [
-  { id: 'vid1', title: 'Video tuyệt vời đầu tiên của tôi', thumbnail: 'https://images.pexels.com/videos/3209828/free-video-3209828.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '10 thg 6, 2025', duration: '0:45' },
-  { id: 'vid2', title: 'Chuyến đi lên núi', thumbnail: 'https://images.pexels.com/videos/857134/free-video-857134.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '12 thg 6, 2025', duration: '1:12' },
-  { id: 'vid3', title: 'Đập hộp đồ công nghệ mới', thumbnail: 'https://images.pexels.com/videos/3194248/free-video-3194248.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '14 thg 6, 2025', duration: '2:30' },
-  { id: 'vid4', title: 'Hướng dẫn nấu ăn nhanh', thumbnail: 'https://images.pexels.com/videos/3042790/free-video-3042790.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '15 thg 6, 2025', duration: '0:59' },
+const initialMockVideos = [
+  { id: 'vid1', title: 'Video tuyệt vời đầu tiên của tôi', thumbnail: 'https://images.pexels.com/videos/3209828/free-video-3209828.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '10 thg 6, 2025', duration: '0:45', sharedOn: { facebook: true, youtube: false, tiktok: false } },
+  { id: 'vid2', title: 'Chuyến đi lên núi', thumbnail: 'https://images.pexels.com/videos/857134/free-video-857134.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '12 thg 6, 2025', duration: '1:12', sharedOn: { facebook: true, youtube: true, tiktok: false } },
+  { id: 'vid3', title: 'Đập hộp đồ công nghệ mới', thumbnail: 'https://images.pexels.com/videos/3194248/free-video-3194248.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '14 thg 6, 2025', duration: '2:30', sharedOn: { facebook: false, youtube: true, tiktok: false } },
+  { id: 'vid4', title: 'Hướng dẫn nấu ăn nhanh', thumbnail: 'https://images.pexels.com/videos/3042790/free-video-3042790.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '15 thg 6, 2025', duration: '0:59', sharedOn: { facebook: false, youtube: false, tiktok: false } },
 ];
 
 export default function Share() {
@@ -27,10 +28,11 @@ export default function Share() {
     tiktok: 102345,
   }
 
+  const [videos, setVideos] = React.useState(initialMockVideos);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [selectedVideo, setSelectedVideo] = React.useState<(typeof mockVideos)[0] | null>(null);
+  const [selectedVideo, setSelectedVideo] = React.useState<(typeof videos)[0] | null>(null);
 
-  const handleShareClick = (video: (typeof mockVideos)[0]) => {
+  const handleShareClick = (video: (typeof videos)[0]) => {
     setSelectedVideo(video);
     setDialogOpen(true);
   };
@@ -51,7 +53,24 @@ export default function Share() {
     toast.info(`Đã ngắt kết nối với ${platform}.`);
   };
 
-  const allConnected = Object.values(connections).every(status => status === true);
+  const handleConfirmShare = (videoId: string, sharedPlatforms: { [key: string]: boolean }) => {
+    setVideos(prevVideos => 
+      prevVideos.map(video => {
+        if (video.id === videoId) {
+          const newSharedOn = { ...video.sharedOn };
+          for (const platform in sharedPlatforms) {
+            if (sharedPlatforms[platform]) {
+              newSharedOn[platform as keyof typeof newSharedOn] = true;
+            }
+          }
+          return { ...video, sharedOn: newSharedOn };
+        }
+        return video;
+      })
+    );
+    setDialogOpen(false);
+    toast.success("Video đã được chia sẻ thành công!");
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -100,7 +119,7 @@ export default function Share() {
         <div>
             <h2 className="text-2xl font-bold mb-4">Chọn Video để chia sẻ</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {mockVideos.map((video) => (
+              {videos.map((video) => (
                   <VideoCard 
                       key={video.id}
                       title={video.title}
@@ -109,6 +128,7 @@ export default function Share() {
                       duration={video.duration}
                       onShare={() => handleShareClick(video)}
                       onDelete={() => handleDeleteClick(video.id)}
+                      sharedOn={video.sharedOn}
                   />
               ))}
             </div>
@@ -120,6 +140,7 @@ export default function Share() {
           onOpenChange={setDialogOpen}
           video={selectedVideo}
           connections={connections}
+          onConfirmShare={handleConfirmShare}
         />
       )}
     </div>

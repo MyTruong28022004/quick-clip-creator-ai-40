@@ -16,12 +16,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { VideoPreview } from "@/components/content/video-preview"
 import { Facebook, Youtube, Music } from "lucide-react"
-
-// Assuming these components exist from shadcn
 import { toast } from "sonner"
 
 interface ShareVideoDialogProps {
   video: {
+    id: string;
     title: string
     thumbnail?: string
   }
@@ -32,9 +31,10 @@ interface ShareVideoDialogProps {
   }
   open: boolean
   onOpenChange: (open: boolean) => void
+  onConfirmShare: (videoId: string, platforms: { facebook: boolean; youtube: boolean; tiktok: boolean; }) => void;
 }
 
-export function ShareVideoDialog({ video, connections, open, onOpenChange }: ShareVideoDialogProps) {
+export function ShareVideoDialog({ video, connections, open, onOpenChange, onConfirmShare }: ShareVideoDialogProps) {
   const [title, setTitle] = React.useState(video.title)
   const [description, setDescription] = React.useState("")
   const [platforms, setPlatforms] = React.useState({
@@ -43,14 +43,22 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange }: Sha
     tiktok: connections.tiktok,
   })
 
+  React.useEffect(() => {
+    setTitle(video.title);
+    setDescription("");
+    setPlatforms({
+        facebook: connections.facebook,
+        youtube: connections.youtube,
+        tiktok: connections.tiktok,
+    })
+  }, [video, connections])
+
   const handlePlatformChange = (platform: keyof typeof platforms, checked: boolean) => {
     setPlatforms((prev) => ({ ...prev, [platform]: checked }))
   }
 
   const handleQuickShare = () => {
-    console.log("Quick sharing:", { title, description, platforms })
-    toast.success("Video đã được chia sẻ thành công!")
-    onOpenChange(false)
+    onConfirmShare(video.id, platforms)
   }
 
   const handleAutoCaption = () => {

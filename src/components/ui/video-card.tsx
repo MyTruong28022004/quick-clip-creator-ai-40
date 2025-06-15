@@ -3,7 +3,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Play, Trash2, MoreHorizontal, Share2, Download } from "lucide-react"
+import { Play, Trash2, MoreHorizontal, Share2, Download, Facebook, Youtube, Music } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +17,11 @@ interface VideoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   thumbnail?: string
   duration?: string
   date?: string
+  sharedOn?: {
+    facebook?: boolean;
+    youtube?: boolean;
+    tiktok?: boolean;
+  };
   onPlay?: () => void
   onDelete?: () => void
   onShare?: () => void
@@ -34,6 +39,7 @@ export function VideoCard({
   onShare,
   onAnalytics,
   onDownload,
+  sharedOn,
   className, 
   ...props 
 }: VideoCardProps) {
@@ -98,6 +104,16 @@ export function VideoCard({
       <CardContent className="p-3">
         <h3 className="font-medium text-sm truncate mb-1 text-black dark:text-white">{title}</h3>
         {date && <p className="text-xs text-muted-foreground">{date}</p>}
+        {sharedOn && Object.values(sharedOn).some(v => v) && (
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-xs text-muted-foreground">Đã chia sẻ:</span>
+            <div className="flex items-center gap-1.5">
+              {sharedOn.facebook && <Facebook className="h-4 w-4 text-blue-600" title="Facebook" />}
+              {sharedOn.youtube && <Youtube className="h-4 w-4 text-red-600" title="YouTube" />}
+              {sharedOn.tiktok && <Music className="h-4 w-4 text-black dark:text-white" title="TikTok" />}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   )
