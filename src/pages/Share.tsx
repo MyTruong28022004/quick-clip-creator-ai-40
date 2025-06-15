@@ -7,6 +7,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { VideoCard } from "@/components/ui/video-card";
 import { ShareVideoDialog } from "@/components/share/share-video-dialog";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const initialMockVideos = [
   { id: 'vid1', title: 'Video tuyệt vời đầu tiên của tôi', thumbnail: 'https://images.pexels.com/videos/3209828/free-video-3209828.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500', date: '10 thg 6, 2025', duration: '0:45', sharedOn: { facebook: true, youtube: false, tiktok: false } },
@@ -31,6 +41,7 @@ export default function Share() {
   const [videos, setVideos] = React.useState(initialMockVideos);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [selectedVideo, setSelectedVideo] = React.useState<(typeof videos)[0] | null>(null);
+  const [videoToDeleteId, setVideoToDeleteId] = React.useState<string | null>(null);
 
   const handleShareClick = (video: (typeof videos)[0]) => {
     setSelectedVideo(video);
@@ -38,8 +49,20 @@ export default function Share() {
   };
   
   const handleDeleteClick = (videoId: string) => {
-    toast.error(`Chức năng xóa video ${videoId} chưa được cài đặt.`);
+    setVideoToDeleteId(videoId);
   }
+
+  const handleConfirmDelete = () => {
+    if (videoToDeleteId) {
+      setVideos(prevVideos => prevVideos.filter(video => video.id !== videoToDeleteId));
+      toast.success("Video đã được xóa thành công!");
+      setVideoToDeleteId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setVideoToDeleteId(null);
+  };
 
   const handleConnect = (platform: keyof typeof connections) => {
     console.log(`Connecting to ${platform}...`);
@@ -143,6 +166,20 @@ export default function Share() {
           onConfirmShare={handleConfirmShare}
         />
       )}
+      <AlertDialog open={videoToDeleteId !== null} onOpenChange={(open) => !open && setVideoToDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Bạn có chắc chắn muốn xóa video này không?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Hành động này không thể được hoàn tác. Thao tác này sẽ xóa vĩnh viễn video khỏi thư viện của bạn.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleCancelDelete}>Hủy</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete}>Xóa</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
