@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, XCircle, type LucideIcon } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface PlatformConnectCardProps {
   platformName: string;
@@ -12,9 +13,11 @@ interface PlatformConnectCardProps {
   onDisconnect: () => void;
   iconColorClassName: string;
   views?: number;
+  userName?: string;
+  userAvatar?: string;
 }
 
-export function PlatformConnectCard({ platformName, Icon, isConnected, onConnect, onDisconnect, iconColorClassName, views }: PlatformConnectCardProps) {
+export function PlatformConnectCard({ platformName, Icon, isConnected, onConnect, onDisconnect, iconColorClassName, views, userName, userAvatar }: PlatformConnectCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -29,15 +32,34 @@ export function PlatformConnectCard({ platformName, Icon, isConnected, onConnect
         )}
       </CardHeader>
       <CardContent>
-        {views !== undefined && (
-          <div className="mb-3">
-            <div className="text-2xl font-bold">{views.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Tổng lượt xem</p>
+        {isConnected && userName && userAvatar ? (
+          <div className="flex items-center gap-3 mb-4">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={userAvatar} alt={userName} />
+              <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-semibold text-sm">{userName}</p>
+              {views !== undefined ? (
+                 <p className="text-xs text-muted-foreground">{views.toLocaleString()} lượt xem</p>
+              ) : (
+                 <p className="text-xs text-muted-foreground">Đã kết nối</p>
+              )}
+            </div>
           </div>
+        ) : (
+          <>
+            {views !== undefined && (
+              <div className="mb-3">
+                <div className="text-2xl font-bold">{views.toLocaleString()}</div>
+                <p className="text-xs text-muted-foreground">Tổng lượt xem</p>
+              </div>
+            )}
+            <div className="text-xs text-muted-foreground mb-4">
+              {isConnected ? `Đã kết nối với ${platformName}.` : `Chưa kết nối.`}
+            </div>
+          </>
         )}
-        <div className="text-xs text-muted-foreground mb-4">
-          {isConnected ? `Đã kết nối với ${platformName}.` : `Chưa kết nối.`}
-        </div>
         <Button
           onClick={isConnected ? onDisconnect : onConnect}
           variant={isConnected ? "outline" : "default"}

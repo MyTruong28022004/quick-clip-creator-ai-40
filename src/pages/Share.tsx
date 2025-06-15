@@ -37,6 +37,21 @@ export default function Share() {
     tiktok: 102345,
   }
 
+  const userProfiles = {
+    facebook: {
+      name: 'Nguyễn Văn A',
+      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d'
+    },
+    youtube: {
+      name: 'Trần Thị B',
+      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026705d'
+    },
+    tiktok: {
+      name: 'Lê Văn C',
+      avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026706d'
+    }
+  };
+
   const [videos, setVideos] = React.useState(initialMockVideos);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [selectedVideo, setSelectedVideo] = React.useState<(typeof videos)[0] | null>(null);
@@ -115,6 +130,8 @@ export default function Share() {
                         onDisconnect={() => handleDisconnect("facebook")}
                         iconColorClassName="text-blue-600"
                         views={mockViews.facebook}
+                        userName={connections.facebook ? userProfiles.facebook.name : undefined}
+                        userAvatar={connections.facebook ? userProfiles.facebook.avatar : undefined}
                     />
                     <PlatformConnectCard
                         platformName="YouTube"
@@ -124,6 +141,8 @@ export default function Share() {
                         onDisconnect={() => handleDisconnect("youtube")}
                         iconColorClassName="text-red-600"
                         views={mockViews.youtube}
+                        userName={connections.youtube ? userProfiles.youtube.name : undefined}
+                        userAvatar={connections.youtube ? userProfiles.youtube.avatar : undefined}
                     />
                     <PlatformConnectCard
                         platformName="TikTok"
@@ -133,6 +152,8 @@ export default function Share() {
                         onDisconnect={() => handleDisconnect("tiktok")}
                         iconColorClassName="text-black dark:text-white"
                         views={connections.tiktok ? mockViews.tiktok : undefined}
+                        userName={connections.tiktok ? userProfiles.tiktok.name : undefined}
+                        userAvatar={connections.tiktok ? userProfiles.tiktok.avatar : undefined}
                     />
                 </div>
             </CardContent>
