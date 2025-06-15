@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
@@ -44,13 +43,6 @@ const chartData = [
     { month: "Tháng 5", views: 2090 },
     { month: "Tháng 6", views: 2140 },
 ];
-
-const chartConfig = {
-    views: {
-        label: "Lượt xem",
-        color: "hsl(var(--chart-1))",
-    },
-} satisfies ChartConfig
 
 const tableData = [
     { id: "VID001", title: "Video tuyệt vời đầu tiên của tôi", views: 12043, likes: 256, comments: 48, shares: 12 },
@@ -126,7 +118,21 @@ export function AnalyticsDashboard() {
   )
 }
 
-const AnalyticsTabContent = ({ platform }: { platform: string }) => (
+const AnalyticsTabContent = ({ platform }: { platform: string }) => {
+    const platformColors: { [key: string]: string } = {
+        YouTube: "hsl(var(--destructive))", // Red
+        Facebook: "hsl(var(--primary))", // Blue
+        TikTok: "#22c55e", // Green
+    };
+
+    const chartConfig = {
+        views: {
+            label: "Lượt xem",
+            color: platformColors[platform] || "hsl(var(--chart-1))",
+        },
+    } satisfies ChartConfig;
+
+    return (
     <div className="space-y-6">
         <Card>
             <CardHeader>
@@ -185,4 +191,5 @@ const AnalyticsTabContent = ({ platform }: { platform: string }) => (
             </CardContent>
         </Card>
     </div>
-);
+    );
+}

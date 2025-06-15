@@ -11,9 +11,10 @@ interface PlatformConnectCardProps {
   onConnect: () => void;
   onDisconnect: () => void;
   iconColorClassName: string;
+  views?: number;
 }
 
-export function PlatformConnectCard({ platformName, Icon, isConnected, onConnect, onDisconnect, iconColorClassName }: PlatformConnectCardProps) {
+export function PlatformConnectCard({ platformName, Icon, isConnected, onConnect, onDisconnect, iconColorClassName, views }: PlatformConnectCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -28,6 +29,12 @@ export function PlatformConnectCard({ platformName, Icon, isConnected, onConnect
         )}
       </CardHeader>
       <CardContent>
+        {views !== undefined && (
+          <div className="mb-3">
+            <div className="text-2xl font-bold">{views.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">Tổng lượt xem</p>
+          </div>
+        )}
         <div className="text-xs text-muted-foreground mb-4">
           {isConnected ? `Đã kết nối với ${platformName}.` : `Chưa kết nối.`}
         </div>

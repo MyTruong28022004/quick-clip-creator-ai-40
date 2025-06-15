@@ -3,7 +3,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Download, Play, Trash2, MoreHorizontal, Share2, BarChart } from "lucide-react"
+import { Play, Trash2, MoreHorizontal, Share2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,9 +31,7 @@ export function VideoCard({
   date,
   onPlay,
   onDelete,
-  onDownload,
   onShare,
-  onAnalytics,
   className, 
   ...props 
 }: VideoCardProps) {
@@ -50,10 +48,10 @@ export function VideoCard({
           <img 
             src={thumbnail} 
             alt={title} 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover aspect-video"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-creative-50">
+          <div className="w-full h-full flex items-center justify-center bg-creative-50 aspect-video">
             <span className="text-creative-300">No Preview</span>
           </div>
         )}
@@ -74,7 +72,7 @@ export function VideoCard({
       <CardContent className="p-3">
         <div className="flex justify-between items-start">
           <div className="flex-1 mr-2">
-            <h3 className="font-medium text-sm truncate mb-1">{title}</h3>
+            <h3 className="font-medium text-sm truncate mb-1 text-black dark:text-white">{title}</h3>
             {date && <p className="text-xs text-muted-foreground">{date}</p>}
           </div>
           
@@ -89,15 +87,7 @@ export function VideoCard({
                 <Share2 className="mr-2 h-4 w-4" />
                 <span>Share</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onAnalytics}>
-                <BarChart className="mr-2 h-4 w-4" />
-                <span>Analytics</span>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onDownload}>
-                <Download className="mr-2 h-4 w-4" />
-                <span>Download</span>
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={onDelete} className="text-destructive focus:text-destructive focus:bg-destructive/10">
                 <Trash2 className="mr-2 h-4 w-4" />
                 <span>Delete</span>
