@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -113,20 +112,20 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange, onCon
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
+          <div className="flex flex-col">
             <Label>Xem trước video</Label>
-            <div className="mt-2">
-              <ShareVideoPreview posterSrc={video.thumbnail} />
+            <div className="mt-2 flex-grow">
+              <ShareVideoPreview posterSrc={video.thumbnail} className="h-full" />
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col">
             <div className="space-y-2">
               <Label htmlFor="title">Tiêu đề</Label>
               <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex flex-col flex-grow">
               <Label htmlFor="description">Mô tả</Label>
-              <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Thêm mô tả cho video của bạn..." className="min-h-[150px] md:min-h-[200px]" />
+              <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Thêm mô tả cho video của bạn..." className="min-h-[150px] md:min-h-[200px] flex-grow" />
               <p className="text-sm text-muted-foreground">
                 Mô tả này sẽ được hiển thị trên các nền tảng bạn chia sẻ.
               </p>

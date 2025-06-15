@@ -2,14 +2,16 @@
 import * as React from "react"
 import { Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface ShareVideoPreviewProps {
   posterSrc?: string
+  className?: string
 }
 
-export function ShareVideoPreview({ posterSrc }: ShareVideoPreviewProps) {
+export function ShareVideoPreview({ posterSrc, className }: ShareVideoPreviewProps) {
   return (
-    <div className="relative aspect-video bg-muted rounded-lg overflow-hidden border border-border">
+    <div className={cn("relative bg-muted rounded-lg overflow-hidden border border-border", className)}>
       {posterSrc ? (
         <img src={posterSrc} alt="Video preview" className="w-full h-full object-cover" />
       ) : (
