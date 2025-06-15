@@ -114,7 +114,10 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange, onCon
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <ShareVideoPreview posterSrc={video.thumbnail} />
+            <Label>Xem trước video</Label>
+            <div className="mt-2">
+              <ShareVideoPreview posterSrc={video.thumbnail} />
+            </div>
           </div>
           <div className="space-y-4">
             <div className="space-y-2">
@@ -124,6 +127,9 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange, onCon
             <div className="space-y-2">
               <Label htmlFor="description">Mô tả</Label>
               <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Thêm mô tả cho video của bạn..." className="min-h-[150px] md:min-h-[200px]" />
+              <p className="text-sm text-muted-foreground">
+                Mô tả này sẽ được hiển thị trên các nền tảng bạn chia sẻ.
+              </p>
             </div>
           </div>
         </div>
