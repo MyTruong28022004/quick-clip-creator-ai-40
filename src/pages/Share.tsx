@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Header } from "@/components/navigation/header";
 import { PlatformConnectCard } from "@/components/share/platform-connect-card";
@@ -100,25 +99,19 @@ export default function Share() {
         
         <div>
             <h2 className="text-2xl font-bold mb-4">Chọn Video để chia sẻ</h2>
-            {allConnected ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {mockVideos.map((video) => (
-                      <VideoCard 
-                          key={video.id}
-                          title={video.title}
-                          thumbnail={video.thumbnail}
-                          date={video.date}
-                          duration={video.duration}
-                          onShare={() => handleShareClick(video)}
-                          onDelete={() => handleDeleteClick(video.id)}
-                      />
-                  ))}
-                </div>
-            ) : (
-                <div className="p-8 text-center border-2 border-dashed rounded-lg">
-                    <p className="text-muted-foreground">Vui lòng kết nối tất cả các nền tảng để xem và chia sẻ video của bạn.</p>
-                </div>
-            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {mockVideos.map((video) => (
+                  <VideoCard 
+                      key={video.id}
+                      title={video.title}
+                      thumbnail={video.thumbnail}
+                      date={video.date}
+                      duration={video.duration}
+                      onShare={() => handleShareClick(video)}
+                      onDelete={() => handleDeleteClick(video.id)}
+                  />
+              ))}
+            </div>
         </div>
       </main>
       {selectedVideo && (
