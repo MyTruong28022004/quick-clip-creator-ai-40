@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Header } from "@/components/navigation/header";
 import { PlatformConnectCard } from "@/components/share/platform-connect-card";
@@ -98,15 +97,15 @@ export default function Share() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Share Videos</h1>
-          <p className="text-muted-foreground">Kết nối các tài khoản mạng xã hội của bạn để bắt đầu chia sẻ.</p>
+      <main className="flex-1 container py-8 md:py-12">
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-bold tracking-tight">Share Videos</h1>
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Kết nối các tài khoản mạng xã hội của bạn để bắt đầu chia sẻ.</p>
         </div>
         
-        <Card className="mb-8">
+        <Card className="mb-12">
             <CardContent className="p-6">
-                 <h2 className="text-lg font-semibold mb-4">Quản lý kết nối</h2>
+                 <h2 className="text-xl font-semibold mb-6">Quản lý kết nối</h2>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <PlatformConnectCard
                         platformName="Facebook"
@@ -140,7 +139,7 @@ export default function Share() {
         </Card>
         
         <div>
-            <h2 className="text-2xl font-bold mb-4">Chọn Video để chia sẻ</h2>
+            <h2 className="text-3xl font-bold mb-6">Chọn Video để chia sẻ</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {videos.map((video) => (
                   <VideoCard 

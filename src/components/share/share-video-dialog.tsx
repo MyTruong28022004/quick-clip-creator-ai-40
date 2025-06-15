@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { VideoPreview } from "@/components/content/video-preview"
+import { ShareVideoPreview } from "@/components/share/share-video-preview"
 import { Facebook, Youtube, Music } from "lucide-react"
 import { toast } from "sonner"
 
@@ -76,9 +76,9 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange, onCon
             Chỉnh sửa chi tiết và chọn nền tảng để chia sẻ video của bạn.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
           <div className="space-y-4">
-            <VideoPreview posterSrc={video.thumbnail} />
+            <ShareVideoPreview posterSrc={video.thumbnail} />
             <div className="space-y-2">
               <Label htmlFor="title">Tiêu đề</Label>
               <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -91,28 +91,37 @@ export function ShareVideoDialog({ video, connections, open, onOpenChange, onCon
           <div className="space-y-6 flex flex-col justify-between">
             <div>
               <Label className="font-semibold">Chọn nền tảng</Label>
-              <div className="space-y-3 mt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
                 {connections.facebook && (
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="facebook" checked={platforms.facebook} onCheckedChange={(checked) => handlePlatformChange("facebook", !!checked)} />
-                    <Label htmlFor="facebook" className="flex items-center gap-2 cursor-pointer"><Facebook className="h-5 w-5 text-blue-600" /> Facebook</Label>
+                  <div>
+                    <Checkbox id="facebook" checked={platforms.facebook} onCheckedChange={(checked) => handlePlatformChange("facebook", !!checked)} className="peer sr-only" />
+                    <Label htmlFor="facebook" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary">
+                      <Facebook className="h-6 w-6 text-blue-600" />
+                      <span className="text-sm font-medium">Facebook</span>
+                    </Label>
                   </div>
                 )}
                 {connections.youtube && (
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="youtube" checked={platforms.youtube} onCheckedChange={(checked) => handlePlatformChange("youtube", !!checked)} />
-                    <Label htmlFor="youtube" className="flex items-center gap-2 cursor-pointer"><Youtube className="h-5 w-5 text-red-600" /> YouTube</Label>
+                  <div>
+                    <Checkbox id="youtube" checked={platforms.youtube} onCheckedChange={(checked) => handlePlatformChange("youtube", !!checked)} className="peer sr-only" />
+                    <Label htmlFor="youtube" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary">
+                      <Youtube className="h-6 w-6 text-red-600" />
+                      <span className="text-sm font-medium">YouTube</span>
+                    </Label>
                   </div>
                 )}
                 {connections.tiktok && (
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="tiktok" checked={platforms.tiktok} onCheckedChange={(checked) => handlePlatformChange("tiktok", !!checked)} />
-                    <Label htmlFor="tiktok" className="flex items-center gap-2 cursor-pointer"><Music className="h-5 w-5" /> TikTok</Label>
+                  <div>
+                    <Checkbox id="tiktok" checked={platforms.tiktok} onCheckedChange={(checked) => handlePlatformChange("tiktok", !!checked)} className="peer sr-only" />
+                    <Label htmlFor="tiktok" className="flex flex-col h-full items-center justify-center gap-2 cursor-pointer rounded-lg border-2 border-muted bg-transparent p-4 transition-colors hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary">
+                      <Music className="h-6 w-6" />
+                      <span className="text-sm font-medium">TikTok</span>
+                    </Label>
                   </div>
                 )}
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 pt-4">
               <Button variant="outline" className="w-full" onClick={handleAutoCaption}>Tạo phụ đề tự động</Button>
             </div>
           </div>
